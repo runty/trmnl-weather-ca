@@ -9,7 +9,8 @@
   .bold { font-weight: bold; }
   .text-sm { font-size: 12px; }
   .nowrap { white-space: nowrap; }
-  .hourly-grid { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(8, 1fr); grid-auto-flow: column; gap: 0 12px; }
+  .hourly-cols { display: flex; gap: 12px; }
+  .hourly-col { flex: 1; }
   .hour-row { display: flex; align-items: center; gap: 4px; padding: 1px 0; }
   .hour-time { width: 32px; flex-shrink: 0; }
   .hour-temp { width: 24px; flex-shrink: 0; text-align: right; }
