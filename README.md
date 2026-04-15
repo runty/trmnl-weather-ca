@@ -2,15 +2,13 @@
 
 A TRMNL recipe showing current conditions, 24-hour hourly forecast with precipitation probability bars, and 6-day forecast. Data direct from Environment Canada API — no server needed.
 
-![Weather](https://weather.gc.ca/weathericons/12.gif)
-
 ## Features
 
-- **Current conditions** — temperature, condition, wind speed/direction, humidity with color weather icon
+- **Current conditions** — temperature, condition, wind speed/direction, humidity
 - **24-hour hourly forecast** — 3 columns x 8 rows with time, weather icon, temperature, and precipitation probability bar (blue = rain chance, yellow = dry)
 - **6-day daily forecast** — day name, weather icon, high/low temperatures in aligned table
-- **Color weather icons** from Environment Canada GIFs — renders on color e-ink displays (6/7-color ACeP)
-- **Text symbol fallback** (☀ ⛅ 🌧 ❄ ⛈ ☾) for icon codes without GIFs
+- **Weather Icons font** ([erikflowers/weather-icons](https://github.com/erikflowers/weather-icons)) — 222 scalable vector icons via CSS font, no image loading issues
+- **Color-coded icons** — blue for clear/cloudy conditions, red for precipitation (rain, snow, thunder) — maps to Spectra 6 native colors
 - **844 Canadian weather stations** supported — enter your station ID
 - **Direct API polling** — TRMNL polls Environment Canada API directly, no GitHub Pages/Actions needed
 - **Local timezone** — hourly times converted from UTC using TRMNL user offset
@@ -23,13 +21,13 @@ A TRMNL recipe showing current conditions, 24-hour hourly forecast with precipit
 Top banner: current conditions (icon, temp, condition, wind, humidity) on the left, 6-day forecast table on the right. Below: 24-hour hourly forecast in 3 columns of 8 rows, each showing time, icon, temp, and blue/yellow precipitation bar.
 
 ### Half Horizontal (800x240)
-Current conditions on the left, 7-day forecast on the right.
+Current conditions on the left. 7-day aligned forecast table on the right with day names, icons, high/low temps.
 
 ### Half Vertical (400x480)
-Current temp at top, 12-hour forecast with precipitation bars, 7-day compact at bottom.
+18 hours of hourly forecast in a single column with time, icon, temp, and precipitation bars. Current conditions in title bar.
 
 ### Quadrant (400x240)
-Current conditions and 3-day forecast.
+Current conditions at top, 4-day aligned forecast table below.
 
 ## Setup
 
@@ -66,34 +64,36 @@ Common station IDs:
 | Whitehorse | yt-16 |
 | Yellowknife | nt-24 |
 
-## Data Source
-
-Environment Canada GeoMet-OGC-API (`api.weather.gc.ca`). Free, anonymous, no API key required. Single endpoint returns current conditions, 24-hour hourly forecasts, and 10-day daily forecasts per station.
-
 ## Project Structure
 
 ```
 trmnl-weather-ca/
 ├── templates/
-│   ├── shared.liquid          # Inter font, CSS classes, Liquid assigns
-│   ├── full.liquid            # Current + 6-day + 24-hour hourly
-│   ├── half_horizontal.liquid # Current + 7-day
-│   ├── half_vertical.liquid   # Current + 12-hour + 7-day
-│   └── quadrant.liquid        # Current + 3-day
+│   ├── shared.liquid          # Inter + Weather Icons fonts, CSS, Liquid assigns
+│   ├── full.liquid            # Current + 6-day + 24-hour hourly w/ precip bars
+│   ├── half_horizontal.liquid # Current + 7-day aligned table
+│   ├── half_vertical.liquid   # 18-hour hourly forecast
+│   └── quadrant.liquid        # Current + 4-day forecast
 ├── form_fields.yml            # Station ID field + author bio
 ├── settings.yml               # Plugin metadata
 └── README.md
 ```
 
+## Data Source
+
+Environment Canada GeoMet-OGC-API (`api.weather.gc.ca`). Free, anonymous, no API key required. Single endpoint returns current conditions, 24-hour hourly forecasts, and 10-day daily forecasts per station.
+
 ## Technical Notes
 
+- **Direct API polling** — no intermediary server, GitHub Pages, or Actions needed
 - EC API returns UTC timestamps; converted to local time via `trmnl.user.utc_offset`
-- Icon codes 0-9 don't have GIFs on EC CDN; fall back to text weather symbols
-- All EC GIF icons forced to uniform 30x30px via CSS (native sizes vary)
+- EC icon codes (0-44) mapped to Weather Icons CSS classes with day/night variants
+- Icons colored blue (`#0000FF`) by default, red (`#FF0000`) for precipitation — Spectra 6 native colors
 - Precipitation bars: blue (`#2266cc`) = rain probability, yellow (`#ffcc00`) = dry remainder
 - Nested Liquid paths (e.g. `properties.currentConditions.temperature.value.en`) work because TRMNL exposes the full JSON response
 - `{% assign %}` shortcuts in shared tab keep templates readable
+- `{% case %}` statements map EC icon codes to Weather Icons classes with precipitation flag
 
 ## Plugin Icon
 
-`https://weather.gc.ca/weathericons/30.gif`
+Use any Weather Icons class or: `https://weather.gc.ca/weathericons/30.gif`
