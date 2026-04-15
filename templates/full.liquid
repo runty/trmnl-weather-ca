@@ -1,12 +1,10 @@
 <div class="layout layout--col gap--distribute">
-  <!-- Current Conditions + 7-Day -->
+  <!-- Current Conditions + 6-Day -->
   <div class="flex flex--between flex--center-y w--full pb--1 border-b-2">
     <div class="flex flex--center-y gap--small no-shrink">
-      {% if cc.iconCode.value >= 10 %}
-        <img src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" width="40" height="40" class="image--contain" />
-      {% else %}
-        <span class="value value--large">{% if cc.iconCode.value == 0 or cc.iconCode.value == 1 %}☀{% elsif cc.iconCode.value <= 5 %}⛅{% elsif cc.iconCode.value <= 7 %}🌧{% elsif cc.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
-      {% endif %}
+      {% assign ec = cc.iconCode.value | plus: 0 %}
+      {% case ec %}{% when 0, 1 %}{% assign ow = "01d" %}{% when 2, 22 %}{% assign ow = "02d" %}{% when 3, 5 %}{% assign ow = "03d" %}{% when 4, 6, 10, 20, 21 %}{% assign ow = "04d" %}{% when 9, 11, 12, 13, 14, 27, 28 %}{% assign ow = "10d" %}{% when 15 %}{% assign ow = "09d" %}{% when 16, 17, 18, 24, 25, 26 %}{% assign ow = "13d" %}{% when 19, 39 %}{% assign ow = "11d" %}{% when 23, 44 %}{% assign ow = "50d" %}{% when 30, 31 %}{% assign ow = "01n" %}{% when 32, 33, 34, 35 %}{% assign ow = "02n" %}{% when 36, 37, 38 %}{% assign ow = "10n" %}{% when 40, 41 %}{% assign ow = "13n" %}{% when 42, 43 %}{% assign ow = "11n" %}{% else %}{% assign ow = "03d" %}{% endcase %}
+      <img src="https://openweathermap.org/img/wn/{{ ow }}@2x.png" width="48" height="48" class="image--contain" />
       <span class="value value--xxlarge bold">{{ cc.temperature.value.en | round }}°</span>
       <div>
         <span class="label label--small bold">{{ cc.condition.en }}</span>
@@ -33,11 +31,9 @@
           {% if period contains "night" or period == "Tonight" %}{% continue %}{% endif %}
           {% if day_count >= 6 %}{% break %}{% endif %}
           <td>
-            {% if fc.abbreviatedForecast.icon.value >= 10 %}
-              <img src="https://weather.gc.ca/weathericons/{{ fc.abbreviatedForecast.icon.value }}.gif" width="22" height="22" class="image--contain" />
-            {% else %}
-              <span class="label label--small">{% if fc.abbreviatedForecast.icon.value == 0 or fc.abbreviatedForecast.icon.value == 1 %}☀{% elsif fc.abbreviatedForecast.icon.value <= 5 %}⛅{% elsif fc.abbreviatedForecast.icon.value <= 7 %}🌧{% elsif fc.abbreviatedForecast.icon.value == 8 %}❄{% else %}⛈{% endif %}</span>
-            {% endif %}
+            {% assign ec = fc.abbreviatedForecast.icon.value | plus: 0 %}
+            {% case ec %}{% when 0, 1 %}{% assign ow = "01d" %}{% when 2, 22 %}{% assign ow = "02d" %}{% when 3, 5 %}{% assign ow = "03d" %}{% when 4, 6, 10, 20, 21 %}{% assign ow = "04d" %}{% when 9, 11, 12, 13, 14, 27, 28 %}{% assign ow = "10d" %}{% when 15 %}{% assign ow = "09d" %}{% when 16, 17, 18, 24, 25, 26 %}{% assign ow = "13d" %}{% when 19, 39 %}{% assign ow = "11d" %}{% when 23, 44 %}{% assign ow = "50d" %}{% when 30, 31 %}{% assign ow = "01n" %}{% when 32, 33, 34, 35 %}{% assign ow = "02n" %}{% when 36, 37, 38 %}{% assign ow = "10n" %}{% when 40, 41 %}{% assign ow = "13n" %}{% when 42, 43 %}{% assign ow = "11n" %}{% else %}{% assign ow = "03d" %}{% endcase %}
+            <img src="https://openweathermap.org/img/wn/{{ ow }}@2x.png" width="28" height="28" class="image--contain" />
           </td>
           {% assign day_count = day_count | plus: 1 %}
         {% endfor %}
@@ -89,11 +85,9 @@
             {% assign local_epoch = utc_epoch | plus: trmnl.user.utc_offset %}
             <td class="nowrap text--right" style="width: 40px;"><span class="label">{{ local_epoch | date: "%-I%P" }}</span></td>
             <td style="width: 30px;">
-              {% if h.iconCode.value >= 10 %}
-                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="30" height="30" class="image--contain" />
-              {% else %}
-                <span class="label">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
-              {% endif %}
+              {% assign ec = h.iconCode.value | plus: 0 %}
+              {% case ec %}{% when 0, 1 %}{% assign ow = "01d" %}{% when 2, 22 %}{% assign ow = "02d" %}{% when 3, 5 %}{% assign ow = "03d" %}{% when 4, 6, 10, 20, 21 %}{% assign ow = "04d" %}{% when 9, 11, 12, 13, 14, 27, 28 %}{% assign ow = "10d" %}{% when 15 %}{% assign ow = "09d" %}{% when 16, 17, 18, 24, 25, 26 %}{% assign ow = "13d" %}{% when 19, 39 %}{% assign ow = "11d" %}{% when 23, 44 %}{% assign ow = "50d" %}{% when 30, 31 %}{% assign ow = "01n" %}{% when 32, 33, 34, 35 %}{% assign ow = "02n" %}{% when 36, 37, 38 %}{% assign ow = "10n" %}{% when 40, 41 %}{% assign ow = "13n" %}{% when 42, 43 %}{% assign ow = "11n" %}{% else %}{% assign ow = "03d" %}{% endcase %}
+              <img src="https://openweathermap.org/img/wn/{{ ow }}@2x.png" width="30" height="30" class="image--contain" />
             </td>
             <td class="nowrap text--right" style="width: 30px;"><span class="label bold">{{ h.temperature.value.en }}°</span></td>
             {% assign pop = h.lop.value.en | plus: 0 %}
@@ -112,9 +106,9 @@
 </div>
 
 <div class="title_bar">
-  {% if cc.iconCode.value >= 10 %}
-    <img class="image" src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" />
-  {% endif %}
+  {% assign ec = cc.iconCode.value | plus: 0 %}
+  {% case ec %}{% when 0, 1 %}{% assign ow = "01d" %}{% when 2, 22 %}{% assign ow = "02d" %}{% when 3, 5 %}{% assign ow = "03d" %}{% when 4, 6, 10, 20, 21 %}{% assign ow = "04d" %}{% when 9, 11, 12, 13, 14, 27, 28 %}{% assign ow = "10d" %}{% when 15 %}{% assign ow = "09d" %}{% when 16, 17, 18, 24, 25, 26 %}{% assign ow = "13d" %}{% when 19, 39 %}{% assign ow = "11d" %}{% when 23, 44 %}{% assign ow = "50d" %}{% when 30, 31 %}{% assign ow = "01n" %}{% when 32, 33, 34, 35 %}{% assign ow = "02n" %}{% when 36, 37, 38 %}{% assign ow = "10n" %}{% when 40, 41 %}{% assign ow = "13n" %}{% when 42, 43 %}{% assign ow = "11n" %}{% else %}{% assign ow = "03d" %}{% endcase %}
+  <img class="image" src="https://openweathermap.org/img/wn/{{ ow }}@2x.png" />
   <span class="title">{{ city }}</span>
   <span class="instance">{{ region }}</span>
 </div>

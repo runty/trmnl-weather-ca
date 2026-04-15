@@ -11,7 +11,7 @@
   .nowrap { white-space: nowrap; }
   .hourly-tbl { width: 100%; border-collapse: collapse; }
   .hourly-tbl td { vertical-align: middle; padding: 2px 3px; }
-  .hourly-tbl td img { display: block; margin: 0 auto; width: 30px; height: 30px; }
+  .hourly-tbl td img { display: block; margin: 0 auto; }
   .daily-tbl { border-collapse: collapse; table-layout: fixed; }
   .daily-tbl td { vertical-align: top; text-align: center; padding: 0 3px; width: 50px; }
   .daily-tbl td img { display: block; margin: 0 auto; }
@@ -27,3 +27,13 @@
 {% assign region = properties.region.en %}
 {% assign hourly = properties.hourlyForecastGroup.hourlyForecasts %}
 {% assign daily = properties.forecastGroup.forecasts %}
+
+{% comment %}
+  Map EC icon codes to OpenWeather icon codes.
+  EC day: 0-29, EC night: 30-39
+  OW format: https://openweathermap.org/img/wn/{code}@2x.png
+  EC codes: 0/1=sunny, 2/3/22=partly cloudy, 4/5/6/10/20/21=cloudy,
+  9/11/12/13/14/27/28=rain, 15=freezing rain, 16/17/18/24/25/26=snow,
+  19/39=thunderstorm, 23=fog/haze
+  30/31=clear night, 32/33/34/35=cloudy night, 36/37/38=rain night
+{% endcomment %}
