@@ -9,8 +9,12 @@
   .bold { font-weight: bold; }
   .text-sm { font-size: 12px; }
   .nowrap { white-space: nowrap; }
-  .hourly-grid { grid-template-columns: repeat(12, 1fr); }
-  .hourly-cell { text-align: center; overflow: hidden; }
+  .hourly-grid { grid-template-columns: 1fr 1fr 1fr; gap: 0 12px; }
+  .hour-row { display: flex; align-items: center; gap: 4px; padding: 1px 0; }
+  .hour-time { width: 32px; flex-shrink: 0; }
+  .hour-temp { width: 24px; flex-shrink: 0; text-align: right; }
+  .hour-bar-wrap { flex: 1; height: 10px; position: relative; }
+  .hour-bar { position: absolute; top: 0; left: 0; height: 100%; background: black; }
   .pop-bar-wrap { height: 20px; position: relative; }
   .pop-bar { position: absolute; bottom: 0; left: 25%; width: 50%; background: black; }
   .icon-map-0, .icon-map-1 { content: "☀"; }
