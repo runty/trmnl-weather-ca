@@ -7,13 +7,13 @@
 - keyname: latitude
   field_type: string
   name: Latitude
-  description: "Your latitude (e.g. 43.65 for Toronto)"
-  placeholder: "43.65"
-  default: "43.65"
+  description: "Your latitude (e.g. 49.28 for Vancouver)"
+  placeholder: "49.28"
+  default: "49.28"
 
 - keyname: longitude
   field_type: string
   name: Longitude
-  description: "Your longitude (e.g. -79.38 for Toronto)"
-  placeholder: "-79.38"
-  default: "-79.38"
+  description: "Your longitude (e.g. -123.12 for Vancouver)"
+  placeholder: "-123.12"
+  default: "-123.12"

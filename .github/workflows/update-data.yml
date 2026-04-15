@@ -10,8 +10,8 @@ permissions:
 
 env:
   # Set your coordinates here
-  WEATHER_LAT: "43.65"
-  WEATHER_LON: "-79.38"
+  WEATHER_LAT: "49.28"
+  WEATHER_LON: "-123.12"
 
 jobs:
   update:
