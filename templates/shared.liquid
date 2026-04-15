@@ -1,8 +1,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css" />
 <style>
   *, .title, .value, .label, .description, .instance, .index, span, td, th, div {
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
   }
+  .wi { font-family: 'weathericons' !important; color: #228B22; }
   .border-b-1 { border-bottom: 1px solid #ccc; }
   .border-b-2 { border-bottom: 2px solid black; }
   .border-l-2 { border-left: 2px solid black; }
@@ -11,15 +13,10 @@
   .nowrap { white-space: nowrap; }
   .hourly-tbl { width: 100%; border-collapse: collapse; }
   .hourly-tbl td { vertical-align: middle; padding: 2px 3px; }
-  .hourly-tbl td img { display: block; margin: 0 auto; }
   .daily-tbl { border-collapse: collapse; table-layout: fixed; }
   .daily-tbl td { vertical-align: top; text-align: center; padding: 0 3px; width: 50px; }
-  .daily-tbl td img { display: block; margin: 0 auto; }
   .hour-bar-wrap { width: 100%; height: 14px; position: relative; background: #ffcc00; }
   .hour-bar { position: absolute; top: 0; left: 0; height: 100%; background: #2266cc; }
-  .pop-bar-wrap { height: 20px; position: relative; }
-  .pop-bar { position: absolute; bottom: 0; left: 25%; width: 50%; background: black; }
-  .icon-map-0, .icon-map-1 { content: "☀"; }
 </style>
 
 {% assign cc = properties.currentConditions %}
@@ -27,13 +24,3 @@
 {% assign region = properties.region.en %}
 {% assign hourly = properties.hourlyForecastGroup.hourlyForecasts %}
 {% assign daily = properties.forecastGroup.forecasts %}
-
-{% comment %}
-  Map EC icon codes to OpenWeather icon codes.
-  EC day: 0-29, EC night: 30-39
-  OW format: https://openweathermap.org/img/wn/{code}@2x.png
-  EC codes: 0/1=sunny, 2/3/22=partly cloudy, 4/5/6/10/20/21=cloudy,
-  9/11/12/13/14/27/28=rain, 15=freezing rain, 16/17/18/24/25/26=snow,
-  19/39=thunderstorm, 23=fog/haze
-  30/31=clear night, 32/33/34/35=cloudy night, 36/37/38=rain night
-{% endcomment %}
