@@ -178,11 +178,16 @@ def parse_daily(fg):
 
 def fetch_weather(lat, lon):
     """Fetch weather for the nearest city page station to given coordinates."""
-    bbox = f"{lon-1},{lat-1},{lon+1},{lat+1}"
-    url = f"{EC_BASE}?f=json&lang=en&limit=5&bbox={bbox}"
+    # Try progressively wider search until we find stations
+    for radius in [0.3, 0.5, 1.0, 2.0]:
+        bbox = f"{lon-radius},{lat-radius},{lon+radius},{lat+radius}"
+        url = f"{EC_BASE}?f=json&lang=en&limit=10&bbox={bbox}"
+        data = fetch_json(url)
+        if data.get("features"):
+            break
     data = fetch_json(url)
 
-    features = data.get("features", [])
+    features = data.get("features", []) if data else []
     if not features:
         raise ValueError(f"No weather stations found near {lat},{lon}")
 
