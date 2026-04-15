@@ -69,9 +69,10 @@
                 <span class="text-sm">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
               {% endif %}
               <span class="hour-temp label label--small bold">{{ h.temperature.value.en }}°</span>
+              {% assign pop = h.lop.value.en | plus: 0 %}
               <div class="hour-bar-wrap">
-                {% if h.lop.value.en > 10 %}
-                  <div class="hour-bar" style="width: {{ h.lop.value.en }}%;"></div>
+                {% if pop > 10 %}
+                  <div class="hour-bar" style="width: {{ pop }}%;"></div>
                 {% endif %}
               </div>
             </div>
