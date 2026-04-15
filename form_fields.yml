@@ -1,0 +1,19 @@
+- keyname: author_info
+  field_type: author_bio
+  name: About
+  category: environment
+  description: "Canadian weather forecast from Environment Canada. Updated hourly.<br><br>Built by <a href='https://github.com/runty' target='_blank'>runty</a>"
+
+- keyname: latitude
+  field_type: string
+  name: Latitude
+  description: "Your latitude (e.g. 43.65 for Toronto)"
+  placeholder: "43.65"
+  default: "43.65"
+
+- keyname: longitude
+  field_type: string
+  name: Longitude
+  description: "Your longitude (e.g. -79.38 for Toronto)"
+  placeholder: "-79.38"
+  default: "-79.38"

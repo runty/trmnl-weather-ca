@@ -1,0 +1,48 @@
+<div class="layout layout--col gap--distribute">
+  <!-- Current -->
+  <div class="flex flex--center-y gap--small w--full pb--1 border-b-2">
+    {% if current.icon_img != blank %}
+      <img src="{{ current.icon_img }}" width="36" height="36" class="image--contain" />
+    {% else %}
+      <span class="value value--large">{{ current.icon }}</span>
+    {% endif %}
+    <span class="value value--xlarge bold">{{ current.temp }}°</span>
+    <span class="label label--small">{{ current.condition }}</span>
+  </div>
+
+  <!-- Hourly (12 hours) -->
+  <div class="w--full">
+    <div class="grid hourly-grid gap--[1px]">
+      {% for h in hourly limit: 12 %}
+        <div class="hourly-cell">
+          <div class="description text-sm">{{ h.time }}</div>
+          <div class="label label--small bold">{{ h.temp }}°</div>
+          <div class="pop-bar-wrap">
+            {% if h.pop > 10 %}
+              <div class="pop-bar" style="height: {{ h.pop_height | divided_by: 5 }}px;"></div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 7-Day compact -->
+  <div class="w--full pt--1 border-b-2">
+    <div class="flex gap--distribute w--full">
+      {% for day in daily limit: 7 %}
+        <div class="text--center">
+          <div class="description bold">{{ day.short }}</div>
+          <div class="label label--small bold">{{ day.high }}°</div>
+          <div class="description">{{ day.low }}°</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://weather.gc.ca/weathericons/30.gif" />
+  <span class="title">{{ location.name }}</span>
+  <span class="instance">{{ current.condition }}</span>
+</div>

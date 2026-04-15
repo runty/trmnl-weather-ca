@@ -1,0 +1,36 @@
+<div class="layout layout--col gap--distribute">
+  <!-- Current -->
+  <div class="flex flex--center-y gap--small w--full">
+    {% if current.icon_img != blank %}
+      <img src="{{ current.icon_img }}" width="32" height="32" class="image--contain" />
+    {% else %}
+      <span class="label">{{ current.icon }}</span>
+    {% endif %}
+    <span class="value value--large bold">{{ current.temp }}°</span>
+    <span class="label label--small">{{ current.condition }}</span>
+  </div>
+
+  <!-- 3-Day -->
+  <div class="w--full pt--1 border-b-2">
+    <div class="flex gap--distribute w--full">
+      {% for day in daily limit: 3 %}
+        <div class="text--center">
+          <div class="description bold">{{ day.short }}</div>
+          {% if day.icon_img != blank %}
+            <img src="{{ day.icon_img }}" width="20" height="20" class="image--contain" />
+          {% else %}
+            <span class="text-sm">{{ day.icon }}</span>
+          {% endif %}
+          <div class="label label--small bold">{{ day.high }}°</div>
+          <div class="description">{{ day.low }}°</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://weather.gc.ca/weathericons/30.gif" />
+  <span class="title">{{ location.name }}</span>
+  <span class="instance">{{ current.temp }}°</span>
+</div>

@@ -1,0 +1,19 @@
+uuid: ""
+name: "Canadian Weather Forecast"
+author: "phobus"
+description: >
+  Current conditions, 24-hour hourly forecast with precipitation bars,
+  and 7-day forecast. Data from Environment Canada, updated hourly.
+
+markup_version: 1
+strategy: polling
+refresh_frequency: 3600  # 1 hour
+
+polling_url: "https://YOUR_GITHUB_USERNAME.github.io/trmnl-weather-ca/weather.json"
+polling_verb: GET
+
+layouts:
+  - full
+  - half_horizontal
+  - half_vertical
+  - quadrant

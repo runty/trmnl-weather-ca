@@ -1,0 +1,81 @@
+<div class="layout layout--col gap--distribute">
+  <!-- Current Conditions -->
+  <div class="flex flex--between flex--center-y w--full pb--1 border-b-2">
+    <div class="flex flex--center-y gap--small">
+      {% if current.icon_img != blank %}
+        <img src="{{ current.icon_img }}" width="48" height="48" class="image--contain" />
+      {% else %}
+        <span class="value value--xlarge">{{ current.icon }}</span>
+      {% endif %}
+      <div>
+        <span class="value value--xxlarge bold">{{ current.temp }}°</span>
+      </div>
+      <div>
+        <span class="label bold">{{ current.condition }}</span>
+        <div class="description">{% if current.feels_like != blank %}Feels {{ current.feels_like }}° · {% endif %}Wind {{ current.wind_dir }} {{ current.wind_speed }}km/h · Humidity {{ current.humidity }}%</div>
+      </div>
+    </div>
+    <div class="text--right">
+      <span class="label bold">{{ location.name }}</span>
+      <div class="description">{{ location.region }}</div>
+    </div>
+  </div>
+
+  <!-- 24-Hour Forecast (2 rows of 12) -->
+  <div class="w--full">
+    {% for row in (0..1) %}
+      {% assign start = row | times: 12 %}
+      <div class="grid hourly-grid gap--[1px]">
+        {% for i in (0..11) %}
+          {% assign idx = start | plus: i %}
+          {% assign h = hourly[idx] %}
+          {% if h %}
+            <div class="hourly-cell">
+              <div class="description text-sm nowrap">{{ h.time }}</div>
+              <div>
+                {% if h.icon_img != blank %}
+                  <img src="{{ h.icon_img }}" width="20" height="20" class="image--contain" />
+                {% else %}
+                  <span class="text-sm">{{ h.icon }}</span>
+                {% endif %}
+              </div>
+              <div class="label label--small bold">{{ h.temp }}°</div>
+              <div class="pop-bar-wrap">
+                {% if h.pop > 10 %}
+                  <div class="pop-bar" style="height: {{ h.pop_height | divided_by: 5 }}px;"></div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if row == 0 %}<div class="border-b-1 my--1"></div>{% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- 7-Day Forecast -->
+  <div class="w--full pt--1 border-b-2">
+    <div class="flex gap--distribute w--full">
+      {% for day in daily limit: 7 %}
+        <div class="text--center">
+          <div class="description bold">{{ day.short }}</div>
+          <div class="my--1">
+            {% if day.icon_img != blank %}
+              <img src="{{ day.icon_img }}" width="28" height="28" class="image--contain" />
+            {% else %}
+              <span class="label">{{ day.icon }}</span>
+            {% endif %}
+          </div>
+          <div class="label label--small bold">{{ day.high }}°</div>
+          <div class="description">{{ day.low }}°</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://weather.gc.ca/weathericons/30.gif" />
+  <span class="title">Environment Canada</span>
+  <span class="instance">{{ location.name }}</span>
+</div>

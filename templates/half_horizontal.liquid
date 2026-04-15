@@ -1,0 +1,39 @@
+<div class="layout layout--row gap--medium flex--center-y">
+  <!-- Current -->
+  <div class="no-shrink">
+    <div class="flex flex--center-y gap--small">
+      {% if current.icon_img != blank %}
+        <img src="{{ current.icon_img }}" width="40" height="40" class="image--contain" />
+      {% else %}
+        <span class="value value--large">{{ current.icon }}</span>
+      {% endif %}
+      <span class="value value--xlarge bold">{{ current.temp }}°</span>
+    </div>
+    <div class="description">{{ current.condition }}</div>
+    <div class="description text-sm">{{ current.wind_dir }} {{ current.wind_speed }}km/h</div>
+  </div>
+
+  <!-- 7-Day -->
+  <div class="stretch-x pl--3 border-l-2">
+    <div class="flex gap--distribute w--full">
+      {% for day in daily limit: 7 %}
+        <div class="text--center">
+          <div class="description bold">{{ day.short }}</div>
+          {% if day.icon_img != blank %}
+            <img src="{{ day.icon_img }}" width="20" height="20" class="image--contain" />
+          {% else %}
+            <span class="text-sm">{{ day.icon }}</span>
+          {% endif %}
+          <div class="label label--small bold">{{ day.high }}°</div>
+          <div class="description">{{ day.low }}°</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://weather.gc.ca/weathericons/30.gif" />
+  <span class="title">{{ location.name }}</span>
+  <span class="instance">{{ current.temp }}°C {{ current.condition }}</span>
+</div>
