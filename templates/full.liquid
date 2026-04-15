@@ -62,13 +62,13 @@
             <div class="hour-row">
               {% assign utc_epoch = h.timestamp | date: "%s" | plus: 0 %}
               {% assign local_epoch = utc_epoch | plus: trmnl.user.utc_offset %}
-              <span class="hour-time description text-sm nowrap">{{ local_epoch | date: "%-I%P" }}</span>
+              <span class="hour-time label label--small nowrap">{{ local_epoch | date: "%-I%P" }}</span>
               {% if h.iconCode.value >= 10 %}
-                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="18" height="18" class="image--contain" />
+                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="24" height="24" class="image--contain" />
               {% else %}
-                <span class="text-sm">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
+                <span class="label label--small">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
               {% endif %}
-              <span class="hour-temp label label--small bold">{{ h.temperature.value.en }}°</span>
+              <span class="hour-temp label bold">{{ h.temperature.value.en }}°</span>
               {% assign pop = h.lop.value.en | plus: 0 %}
               <div class="hour-bar-wrap">
                 {% if pop > 10 %}
