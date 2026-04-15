@@ -50,37 +50,39 @@
     </div>
   </div>
 
-  <!-- 24-Hour Forecast (3 columns x 8 rows) -->
-  <div class="hourly-cols grow">
-    {% for col in (0..2) %}
-      {% assign col_start = col | times: 8 %}
-      <div class="hourly-col">
-        {% for i in (0..7) %}
-          {% assign idx = col_start | plus: i %}
+  <!-- 24-Hour Forecast (table: 8 rows x 3 column groups) -->
+  <table class="hourly-tbl grow">
+    {% for row in (0..7) %}
+      <tr>
+        {% for col in (0..2) %}
+          {% assign idx = col | times: 8 | plus: row %}
           {% assign h = hourly[idx] %}
           {% if h %}
-            <div class="hour-row">
-              {% assign utc_epoch = h.timestamp | date: "%s" | plus: 0 %}
-              {% assign local_epoch = utc_epoch | plus: trmnl.user.utc_offset %}
-              <span class="hour-time label label--small nowrap">{{ local_epoch | date: "%-I%P" }}</span>
+            {% assign utc_epoch = h.timestamp | date: "%s" | plus: 0 %}
+            {% assign local_epoch = utc_epoch | plus: trmnl.user.utc_offset %}
+            <td class="nowrap" style="width: 40px;"><span class="label">{{ local_epoch | date: "%-I%P" }}</span></td>
+            <td style="width: 28px;">
               {% if h.iconCode.value >= 10 %}
-                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="24" height="24" class="image--contain" />
+                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="28" height="28" class="image--contain" />
               {% else %}
-                <span class="label label--small">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
+                <span class="label">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
               {% endif %}
-              <span class="hour-temp label bold">{{ h.temperature.value.en }}°</span>
-              {% assign pop = h.lop.value.en | plus: 0 %}
+            </td>
+            <td class="nowrap text--right" style="width: 30px;"><span class="label bold">{{ h.temperature.value.en }}°</span></td>
+            {% assign pop = h.lop.value.en | plus: 0 %}
+            <td>
               <div class="hour-bar-wrap">
                 {% if pop > 10 %}
                   <div class="hour-bar" style="width: {{ pop }}%;"></div>
                 {% endif %}
               </div>
-            </div>
+            </td>
+            {% if col < 2 %}<td style="width: 8px;"></td>{% endif %}
           {% endif %}
         {% endfor %}
-      </div>
+      </tr>
     {% endfor %}
-  </div>
+  </table>
 </div>
 
 <div class="title_bar">
