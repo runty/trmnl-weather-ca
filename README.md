@@ -1,61 +1,64 @@
 # TRMNL Canadian Weather Forecast
 
-A TRMNL recipe showing current conditions, 24-hour hourly forecast with precipitation probability bars, and 7-day forecast. Data from Environment Canada.
+A TRMNL recipe showing current conditions, 24-hour hourly forecast with precipitation probability bars, and 7-day forecast. Data direct from Environment Canada API — no server or GitHub Actions needed.
 
 ## Features
 
-- **Current conditions** — temperature, condition, feels-like, wind, humidity
+- **Current conditions** — temperature, condition, wind, humidity with color weather icon
 - **24-hour hourly forecast** — two rows of 12 hours with temps, weather icons, and precipitation probability bars
 - **7-day daily forecast** — day name, weather icon, high/low temps
-- **Color weather icons** from Environment Canada (renders on color e-ink displays)
-- **Text symbol fallback** for monochrome displays
-- **Coordinate-based** — finds nearest Environment Canada weather station
-- Updated **every hour** via GitHub Actions
+- **Color weather icons** from Environment Canada GIFs (blue rain, yellow sun — renders on color e-ink)
+- **844 Canadian weather stations** supported — just enter your station ID
+- **Direct API polling** — no GitHub Pages/Actions needed, TRMNL polls EC API directly
+- Refreshes **every hour**
+
+## Setup
+
+### 1. Create a Private Plugin on TRMNL
+1. Plugins > Private Plugin
+2. Strategy: **Polling**
+3. Polling URL: `https://api.weather.gc.ca/collections/citypageweather-realtime/items/{{station}}?f=json&lang=en`
+4. Paste `form_fields.yml` into Custom Fields
+5. Enter your station ID (e.g. `bc-96` for Richmond)
+6. Paste templates into markup tabs (shared, full, half horizontal, half vertical, quadrant)
+7. Save and **Force Refresh**
+
+### Finding your station ID
+1. Go to [weather.gc.ca](https://weather.gc.ca)
+2. Search for your city
+3. The station ID is in the URL — e.g. `weather.gc.ca/en/location/index.html?coords=49.15,-123.16` → look up the ID in the API
+
+Common station IDs:
+| City | ID |
+|------|-----|
+| Vancouver | bc-74 |
+| Richmond | bc-96 |
+| Toronto | on-128 |
+| Montreal | qc-147 |
+| Calgary | ab-52 |
+| Edmonton | ab-50 |
+| Ottawa | on-118 |
+| Winnipeg | mb-38 |
+| Halifax | ns-19 |
 
 ## Layouts
 
 ### Full (800x480)
-Current conditions banner at top. 24-hour forecast in two rows with precipitation bars. 7-day forecast at bottom.
+Current conditions banner. 24-hour forecast in two rows with precipitation bars. 7-day forecast at bottom.
 
 ### Half Horizontal (800x240)
-Current conditions on the left. 7-day forecast on the right.
+Current conditions left. 7-day forecast right.
 
 ### Half Vertical (400x480)
-Current temp at top. 12-hour forecast with precipitation bars. 7-day compact at bottom.
+Current temp top. 12-hour forecast with precipitation bars. 7-day compact bottom.
 
 ### Quadrant (400x240)
 Current conditions and 3-day forecast.
 
-## Setup
-
-### 1. Fork this repository
-
-### 2. Set your coordinates
-Edit `.github/workflows/update-data.yml` and change `WEATHER_LAT` and `WEATHER_LON` to your location:
-```yaml
-env:
-  WEATHER_LAT: "43.65"    # Your latitude
-  WEATHER_LON: "-79.38"   # Your longitude
-```
-
-### 3. Enable GitHub Pages
-Settings > Pages > Source: **GitHub Actions**
-
-### 4. Run the data fetch
-Actions > "Update Weather Data" > Run workflow
-
-### 5. Create a Private Plugin on TRMNL
-1. Plugins > Private Plugin
-2. Strategy: **Polling**
-3. Polling URL: `https://YOUR_USERNAME.github.io/trmnl-weather-ca/weather.json`
-4. Paste `form_fields.yml` into Custom Fields
-5. Paste templates into markup tabs
-6. Save and **Force Refresh**
-
 ## Data Source
 
-Environment Canada GeoMet-OGC-API (`api.weather.gc.ca`). Free, anonymous, no API key required. Provides city page weather data including current conditions, 24-hour hourly forecasts, and 10-day daily forecasts.
+Environment Canada GeoMet-OGC-API (`api.weather.gc.ca`). Free, anonymous, no API key required. TRMNL polls the API directly — no intermediary server needed.
 
 ## Plugin Icon
 
-`https://weather.gc.ca/weathericons/30.gif`
+Use the current condition icon from the title bar, or: `https://weather.gc.ca/weathericons/30.gif`

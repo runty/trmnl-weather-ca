@@ -3,10 +3,9 @@
   *, .title, .value, .label, .description, .instance, .index, span, td, th, div {
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
   }
-  .tbl { width: 100%; border-collapse: collapse; }
-  .tbl td { vertical-align: middle; }
   .border-b-1 { border-bottom: 1px solid #ccc; }
   .border-b-2 { border-bottom: 2px solid black; }
+  .border-l-2 { border-left: 2px solid black; }
   .bold { font-weight: bold; }
   .text-sm { font-size: 12px; }
   .nowrap { white-space: nowrap; }
@@ -15,3 +14,9 @@
   .pop-bar-wrap { height: 20px; position: relative; }
   .pop-bar { position: absolute; bottom: 0; left: 25%; width: 50%; background: black; }
 </style>
+
+{% assign cc = properties.currentConditions %}
+{% assign city = properties.name.en %}
+{% assign region = properties.region.en %}
+{% assign hourly = properties.hourlyForecastGroup.hourlyForecasts %}
+{% assign daily = properties.forecastGroup.forecasts %}

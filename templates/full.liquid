@@ -2,80 +2,87 @@
   <!-- Current Conditions -->
   <div class="flex flex--between flex--center-y w--full pb--1 border-b-2">
     <div class="flex flex--center-y gap--small">
-      {% if current.icon_img != blank %}
-        <img src="{{ current.icon_img }}" width="48" height="48" class="image--contain" />
-      {% else %}
-        <span class="value value--xlarge">{{ current.icon }}</span>
-      {% endif %}
+      <img src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" width="48" height="48" class="image--contain" />
       <div>
-        <span class="value value--xxlarge bold">{{ current.temp }}°</span>
+        <span class="value value--xxlarge bold">{{ cc.temperature.value.en | round }}°</span>
       </div>
       <div>
-        <span class="label bold">{{ current.condition }}</span>
-        <div class="description">{% if current.feels_like != blank %}Feels {{ current.feels_like }}° · {% endif %}Wind {{ current.wind_dir }} {{ current.wind_speed }}km/h · Humidity {{ current.humidity }}%</div>
+        <span class="label bold">{{ cc.condition.en }}</span>
+        <div class="description">Wind {{ cc.wind.direction.value.en }} {{ cc.wind.speed.value.en }} km/h · Humidity {{ cc.relativeHumidity.value.en }}%</div>
       </div>
     </div>
     <div class="text--right">
-      <span class="label bold">{{ location.name }}</span>
-      <div class="description">{{ location.region }}</div>
+      <span class="label bold">{{ city }}</span>
+      <div class="description text-sm">{{ region }}</div>
     </div>
   </div>
 
   <!-- 24-Hour Forecast (2 rows of 12) -->
   <div class="w--full">
-    {% for row in (0..1) %}
-      {% assign start = row | times: 12 %}
-      <div class="grid hourly-grid gap--[1px]">
-        {% for i in (0..11) %}
-          {% assign idx = start | plus: i %}
-          {% assign h = hourly[idx] %}
-          {% if h %}
-            <div class="hourly-cell">
-              <div class="description text-sm nowrap">{{ h.time }}</div>
-              <div>
-                {% if h.icon_img != blank %}
-                  <img src="{{ h.icon_img }}" width="20" height="20" class="image--contain" />
-                {% else %}
-                  <span class="text-sm">{{ h.icon }}</span>
-                {% endif %}
-              </div>
-              <div class="label label--small bold">{{ h.temp }}°</div>
-              <div class="pop-bar-wrap">
-                {% if h.pop > 10 %}
-                  <div class="pop-bar" style="height: {{ h.pop_height | divided_by: 5 }}px;"></div>
-                {% endif %}
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      {% if row == 0 %}<div class="border-b-1 my--1"></div>{% endif %}
+    {% assign hour_count = 0 %}
+    {% for h in hourly %}
+      {% if hour_count == 12 %}
+        </div><div class="border-b-1 my--1"></div><div class="grid hourly-grid gap--[1px]">
+      {% endif %}
+      {% if hour_count == 0 %}
+        <div class="grid hourly-grid gap--[1px]">
+      {% endif %}
+      {% if hour_count < 24 %}
+        <div class="hourly-cell">
+          <div class="description text-sm nowrap">{{ h.timestamp | date: "%-I%P" }}</div>
+          <div>
+            <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="18" height="18" class="image--contain" />
+          </div>
+          <div class="label label--small bold">{{ h.temperature.value.en }}°</div>
+          <div class="pop-bar-wrap">
+            {% if h.lop.value.en > 10 %}
+              {% assign bar_h = h.lop.value.en | divided_by: 5 %}
+              <div class="pop-bar" style="height: {{ bar_h }}px;"></div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      {% assign hour_count = hour_count | plus: 1 %}
     {% endfor %}
+    {% if hour_count > 0 %}</div>{% endif %}
   </div>
 
   <!-- 7-Day Forecast -->
   <div class="w--full pt--1 border-b-2">
     <div class="flex gap--distribute w--full">
-      {% for day in daily limit: 7 %}
+      {% assign day_count = 0 %}
+      {% for fc in daily %}
+        {% assign period = fc.period.textForecastName.en %}
+        {% if period contains "night" or period == "Tonight" %}{% continue %}{% endif %}
+        {% if day_count >= 7 %}{% break %}{% endif %}
         <div class="text--center">
-          <div class="description bold">{{ day.short }}</div>
+          <div class="description bold">{{ period | truncate: 3, "" }}</div>
           <div class="my--1">
-            {% if day.icon_img != blank %}
-              <img src="{{ day.icon_img }}" width="28" height="28" class="image--contain" />
-            {% else %}
-              <span class="label">{{ day.icon }}</span>
-            {% endif %}
+            <img src="https://weather.gc.ca/weathericons/{{ fc.abbreviatedForecast.icon.value }}.gif" width="28" height="28" class="image--contain" />
           </div>
-          <div class="label label--small bold">{{ day.high }}°</div>
-          <div class="description">{{ day.low }}°</div>
+          {% for t in fc.temperatures.temperature %}
+            {% if t.class.en == "high" %}
+              <div class="label label--small bold">{{ t.value.en }}°</div>
+            {% endif %}
+          {% endfor %}
+          {% assign next_idx = forloop.index %}
+          {% assign night_fc = daily[next_idx] %}
+          {% if night_fc %}
+            {% for t in night_fc.temperatures.temperature %}
+              {% if t.class.en == "low" %}
+                <div class="description">{{ t.value.en }}°</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </div>
+        {% assign day_count = day_count | plus: 1 %}
       {% endfor %}
     </div>
   </div>
 </div>
 
 <div class="title_bar">
-  <img class="image" src="https://weather.gc.ca/weathericons/30.gif" />
-  <span class="title">Environment Canada</span>
-  <span class="instance">{{ location.name }}</span>
+  <img class="image" src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" />
+  <span class="title">{{ city }}</span>
+  <span class="instance">{{ cc.temperature.value.en | round }}°C {{ cc.condition.en }}</span>
 </div>

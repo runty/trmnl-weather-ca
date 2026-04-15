@@ -2,18 +2,11 @@
   field_type: author_bio
   name: About
   category: environment
-  description: "Canadian weather forecast from Environment Canada. Updated hourly.<br><br>Built by <a href='https://github.com/runty' target='_blank'>runty</a>"
+  description: "Canadian weather from Environment Canada. Current conditions, 24-hour hourly forecast with precipitation bars, and 7-day forecast.<br><br>Built by <a href='https://github.com/runty' target='_blank'>runty</a>"
 
-- keyname: latitude
+- keyname: station
   field_type: string
-  name: Latitude
-  description: "Your latitude (e.g. 49.28 for Vancouver)"
-  placeholder: "49.28"
-  default: "49.28"
-
-- keyname: longitude
-  field_type: string
-  name: Longitude
-  description: "Your longitude (e.g. -123.12 for Vancouver)"
-  placeholder: "-123.12"
-  default: "-123.12"
+  name: Weather Station ID
+  description: "Enter your Environment Canada station ID (e.g. bc-96 for Richmond, on-128 for Toronto). Find yours at <a href='https://weather.gc.ca' target='_blank'>weather.gc.ca</a> - the ID is in the URL of your city's page."
+  placeholder: "bc-96"
+  default: "bc-96"

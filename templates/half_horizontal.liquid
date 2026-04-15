@@ -2,38 +2,47 @@
   <!-- Current -->
   <div class="no-shrink">
     <div class="flex flex--center-y gap--small">
-      {% if current.icon_img != blank %}
-        <img src="{{ current.icon_img }}" width="40" height="40" class="image--contain" />
-      {% else %}
-        <span class="value value--large">{{ current.icon }}</span>
-      {% endif %}
-      <span class="value value--xlarge bold">{{ current.temp }}°</span>
+      <img src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" width="40" height="40" class="image--contain" />
+      <span class="value value--xlarge bold">{{ cc.temperature.value.en | round }}°</span>
     </div>
-    <div class="description">{{ current.condition }}</div>
-    <div class="description text-sm">{{ current.wind_dir }} {{ current.wind_speed }}km/h</div>
+    <div class="description">{{ cc.condition.en }}</div>
+    <div class="description text-sm">{{ cc.wind.direction.value.en }} {{ cc.wind.speed.value.en }} km/h</div>
   </div>
 
   <!-- 7-Day -->
   <div class="stretch-x pl--3 border-l-2">
     <div class="flex gap--distribute w--full">
-      {% for day in daily limit: 7 %}
+      {% assign day_count = 0 %}
+      {% for fc in daily %}
+        {% assign period = fc.period.textForecastName.en %}
+        {% if period contains "night" or period == "Tonight" %}{% continue %}{% endif %}
+        {% if day_count >= 7 %}{% break %}{% endif %}
         <div class="text--center">
-          <div class="description bold">{{ day.short }}</div>
-          {% if day.icon_img != blank %}
-            <img src="{{ day.icon_img }}" width="20" height="20" class="image--contain" />
-          {% else %}
-            <span class="text-sm">{{ day.icon }}</span>
+          <div class="description bold">{{ period | truncate: 3, "" }}</div>
+          <img src="https://weather.gc.ca/weathericons/{{ fc.abbreviatedForecast.icon.value }}.gif" width="20" height="20" class="image--contain" />
+          {% for t in fc.temperatures.temperature %}
+            {% if t.class.en == "high" %}
+              <div class="label label--small bold">{{ t.value.en }}°</div>
+            {% endif %}
+          {% endfor %}
+          {% assign next_idx = forloop.index %}
+          {% assign night_fc = daily[next_idx] %}
+          {% if night_fc %}
+            {% for t in night_fc.temperatures.temperature %}
+              {% if t.class.en == "low" %}
+                <div class="description">{{ t.value.en }}°</div>
+              {% endif %}
+            {% endfor %}
           {% endif %}
-          <div class="label label--small bold">{{ day.high }}°</div>
-          <div class="description">{{ day.low }}°</div>
         </div>
+        {% assign day_count = day_count | plus: 1 %}
       {% endfor %}
     </div>
   </div>
 </div>
 
 <div class="title_bar">
-  <img class="image" src="https://weather.gc.ca/weathericons/30.gif" />
-  <span class="title">{{ location.name }}</span>
-  <span class="instance">{{ current.temp }}°C {{ current.condition }}</span>
+  <img class="image" src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" />
+  <span class="title">{{ city }}</span>
+  <span class="instance">{{ cc.temperature.value.en | round }}°C</span>
 </div>
