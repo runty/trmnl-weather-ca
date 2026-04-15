@@ -88,9 +88,9 @@
             {% assign utc_epoch = h.timestamp | date: "%s" | plus: 0 %}
             {% assign local_epoch = utc_epoch | plus: trmnl.user.utc_offset %}
             <td class="nowrap text--right" style="width: 40px;"><span class="label">{{ local_epoch | date: "%-I%P" }}</span></td>
-            <td style="width: 34px;">
+            <td style="width: 30px;">
               {% if h.iconCode.value >= 10 %}
-                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="34" height="34" class="image--contain" />
+                <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="30" height="30" class="image--contain" />
               {% else %}
                 <span class="label">{% if h.iconCode.value == 0 or h.iconCode.value == 1 %}☀{% elsif h.iconCode.value <= 5 %}⛅{% elsif h.iconCode.value <= 7 %}🌧{% elsif h.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
               {% endif %}
@@ -104,7 +104,6 @@
                 {% endif %}
               </div>
             </td>
-            {% if col < 2 %}<td style="width: 4px;"></td>{% endif %}
           {% endif %}
         {% endfor %}
       </tr>
