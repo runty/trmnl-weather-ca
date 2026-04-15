@@ -1,18 +1,16 @@
 <div class="layout layout--col gap--distribute">
   <!-- Current Conditions + 7-Day -->
   <div class="flex flex--between flex--center-y w--full pb--1 border-b-2">
-    <div class="flex flex--center-y gap--small">
+    <div class="flex flex--center-y gap--small no-shrink">
       {% if cc.iconCode.value >= 10 %}
-        <img src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" width="48" height="48" class="image--contain" />
+        <img src="https://weather.gc.ca/weathericons/{{ cc.iconCode.value }}.gif" width="40" height="40" class="image--contain" />
       {% else %}
-        <span class="value value--xlarge">{% if cc.iconCode.value == 0 or cc.iconCode.value == 1 %}☀{% elsif cc.iconCode.value <= 5 %}⛅{% elsif cc.iconCode.value <= 7 %}🌧{% elsif cc.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
+        <span class="value value--large">{% if cc.iconCode.value == 0 or cc.iconCode.value == 1 %}☀{% elsif cc.iconCode.value <= 5 %}⛅{% elsif cc.iconCode.value <= 7 %}🌧{% elsif cc.iconCode.value == 8 %}❄{% else %}⛈{% endif %}</span>
       {% endif %}
+      <span class="value value--xxlarge bold">{{ cc.temperature.value.en | round }}°</span>
       <div>
-        <span class="value value--xxlarge bold">{{ cc.temperature.value.en | round }}°</span>
-      </div>
-      <div>
-        <span class="label bold">{{ cc.condition.en }}</span>
-        <div class="description">Wind {{ cc.wind.direction.value.en }} {{ cc.wind.speed.value.en }} km/h · Humidity {{ cc.relativeHumidity.value.en }}%</div>
+        <span class="label label--small bold">{{ cc.condition.en }}</span>
+        <div class="description text-sm">{{ cc.wind.direction.value.en }} {{ cc.wind.speed.value.en }}km/h · {{ cc.relativeHumidity.value.en }}%</div>
       </div>
     </div>
 
@@ -89,7 +87,7 @@
           {% if h %}
             {% assign utc_epoch = h.timestamp | date: "%s" | plus: 0 %}
             {% assign local_epoch = utc_epoch | plus: trmnl.user.utc_offset %}
-            <td class="nowrap" style="width: 40px;"><span class="label">{{ local_epoch | date: "%-I%P" }}</span></td>
+            <td class="nowrap text--right" style="width: 40px;"><span class="label">{{ local_epoch | date: "%-I%P" }}</span></td>
             <td style="width: 28px;">
               {% if h.iconCode.value >= 10 %}
                 <img src="https://weather.gc.ca/weathericons/{{ h.iconCode.value }}.gif" width="28" height="28" class="image--contain" />
