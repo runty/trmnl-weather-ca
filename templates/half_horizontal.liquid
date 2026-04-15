@@ -35,7 +35,7 @@
             {% assign ec = fc.abbreviatedForecast.icon.value | plus: 0 %}
             {% case ec %}{% when 0, 1 %}{% assign wi = "wi-day-sunny" %}{% when 2 %}{% assign wi = "wi-day-cloudy" %}{% when 3, 5 %}{% assign wi = "wi-day-cloudy-high" %}{% when 4, 6, 10 %}{% assign wi = "wi-cloudy" %}{% when 9, 11, 12 %}{% assign wi = "wi-day-rain" %}{% when 13, 14, 15 %}{% assign wi = "wi-day-rain-mix" %}{% when 16, 17 %}{% assign wi = "wi-day-snow" %}{% when 18, 24, 25, 26 %}{% assign wi = "wi-snow-wind" %}{% when 19 %}{% assign wi = "wi-day-thunderstorm" %}{% when 20, 21 %}{% assign wi = "wi-day-haze" %}{% when 22, 23 %}{% assign wi = "wi-day-fog" %}{% when 27, 28 %}{% assign wi = "wi-day-sprinkle" %}{% when 30, 31 %}{% assign wi = "wi-night-clear" %}{% when 32 %}{% assign wi = "wi-night-alt-partly-cloudy" %}{% when 33, 34, 35 %}{% assign wi = "wi-night-alt-cloudy" %}{% when 36, 37, 38 %}{% assign wi = "wi-night-alt-rain" %}{% when 39 %}{% assign wi = "wi-night-alt-thunderstorm" %}{% when 40, 41 %}{% assign wi = "wi-night-alt-snow" %}{% when 42, 43 %}{% assign wi = "wi-tornado" %}{% when 44 %}{% assign wi = "wi-strong-wind" %}{% else %}{% assign wi = "wi-cloud" %}{% endcase %}
             {% if ec == 9 or ec == 11 or ec == 12 or ec == 13 or ec == 14 or ec == 15 or ec == 16 or ec == 17 or ec == 18 or ec == 19 or ec == 24 or ec == 25 or ec == 26 or ec == 27 or ec == 28 or ec == 36 or ec == 37 or ec == 38 or ec == 39 or ec == 40 or ec == 41 or ec == 42 or ec == 43 %}{% assign wc = "wi-red" %}{% else %}{% assign wc = "wi-blue" %}{% endif %}
-            <i class="wi {{ wi }} {{ wc }} label label--small"></i>
+            <i class="wi {{ wi }} {{ wc }}"></i>
           </td>
           {% assign day_count = day_count | plus: 1 %}
         {% endfor %}
